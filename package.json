@@ -1,0 +1,21 @@
+{
+  "name": "node-telegram-grup-yonetim-botu",
+  "version": "1.0.0",
+  "description": "Telegram gruplarının yönetiminde yardımcı olma amacıyla yazılmış bir bot.",
+  "main": "main.js",
+  "scripts": {},
+  "keywords": [
+    "telegram",
+    "grup",
+    "yönetim",
+    "koruma",
+    "spam",
+    "botu"
+  ],
+  "author": "eugenie9",
+  "license": "MIT",
+  "dependencies": {
+    "lowdb": "^1.0.0",
+    "node-telegram-bot-api": "^0.51.0"
+  }
+}
