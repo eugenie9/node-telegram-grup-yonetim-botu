@@ -23,7 +23,7 @@ Telegram gruplarının yönetiminde yardımcı olma amacıyla yazılmış bir bo
 
 Telegram üzerinde bot oluşturabilmek için [BotFather](https://t.me/BotFather)'a giderek bir takım süreçleri tamamlamanız gerekiyor. Botunuzu oluşturduktan sonra API Token bilgilerinizi alarak main.js dosyasındaki token kısmına yapıştırdıktan sonra botu kullanmaya başlayabilirsiniz.
 
-Bu botu komünite grubumuz olan [Bull Academy](t.me/BullAcademy)'de grup içi ara yönetim seviyeleri ve itibar sistemi oluşturmak için geliştirmiştim, daha sonrasında açık kaynak hale getirmeye karar verdim. Ekleyeceğiniz özellikleri forklayarak ya da bu proje üzerinden göndermekten çekinmeyin lütfen.
+Bu botu komünite grubumuz olan [Bull Academy](https://t.me/BullAcademy)'de grup içi ara yönetim seviyeleri ve itibar sistemi oluşturmak için geliştirmiştim, daha sonrasında açık kaynak hale getirmeye karar verdim. Ekleyeceğiniz özellikleri forklayarak ya da bu proje üzerinden göndermekten çekinmeyin lütfen.
 
 Grup içi hakaret/küfür kontrolünde [Özcan Oğuz](https://github.com/ooguz/)'un [turkce-kufur-karaliste](https://github.com/ooguz/turkce-kufur-karaliste) projesini kullandım. Kelime eklemek/çıkarmak için karaliste.js dosyasını düzenleyebilirsiniz.
 
