@@ -25,6 +25,6 @@ Bu botu komünite grubumuz olan [Bull Academy](t.me/BullAcademy)'de grup içi ar
 
 Grup içi hakaret/küfür kontrolünde [Özcan Oğuz](https://github.com/ooguz/)'un [turkce-kufur-karaliste](https://github.com/ooguz/turkce-kufur-karaliste) projesini kullandım. Kelime eklemek/çıkarmak için karaliste.js dosyasını düzenleyebilirsiniz.
 
-Yeni giren kullanıcıların tüm mesaj alma yetkileri alınır ve susturulur. Karşılama mesajında yer alan "Ben bot değilim" butonuna tıklanılmasının ardından bot tarafından kullanıcının tüm yasakları kaldırılır. Bu özellik bot hesapların grubu spamlamasının önüne geçmek için eklendi.
+Yeni giren kullanıcıların tüm mesaj atma yetkileri alınır ve susturulur. Karşılama mesajında yer alan "Ben bot değilim" butonuna tıklanılmasının ardından bot tarafından kullanıcının tüm yasakları kaldırılır. Bu özellik bot hesapların grubu spamlamasının önüne geçmek için eklendi.
 
 **ÖNEMLİ NOT**: Botun tüm özelliklerini kullanabilmek için grubun "supergroup" statüsünde olması gerekmektedir.
