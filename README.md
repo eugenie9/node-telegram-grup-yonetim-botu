@@ -21,10 +21,12 @@ Telegram gruplarının yönetiminde yardımcı olma amacıyla yazılmış bir bo
 - /admin - Gruptaki yönetici ve moderatörleri listeler.
 - +1 / 👍 - Bir mesaj yanıtlanarak +1 ya da 👍 emojisi gönderilirse yanıtlanan mesaj sahibinin itibarı arttırılır.
 
+Telegram üzerinde bot oluşturabilmek için [BotFather](https://t.me/BotFather)'a giderek bir takım süreçleri tamamlamanız gerekiyor. Botunuzu oluşturduktan sonra API Token bilgilerinizi alarak main.js dosyasındaki token kısmına yapıştırdıktan sonra botu kullanmaya başlayabilirsiniz.
+
 Bu botu komünite grubumuz olan [Bull Academy](t.me/BullAcademy)'de grup içi ara yönetim seviyeleri ve itibar sistemi oluşturmak için geliştirmiştim, daha sonrasında açık kaynak hale getirmeye karar verdim. Ekleyeceğiniz özellikleri forklayarak ya da bu proje üzerinden göndermekten çekinmeyin lütfen.
 
 Grup içi hakaret/küfür kontrolünde [Özcan Oğuz](https://github.com/ooguz/)'un [turkce-kufur-karaliste](https://github.com/ooguz/turkce-kufur-karaliste) projesini kullandım. Kelime eklemek/çıkarmak için karaliste.js dosyasını düzenleyebilirsiniz.
 
-Yeni giren kullanıcıların tüm mesaj atma yetkileri alınır ve susturulur. Karşılama mesajında yer alan "Ben bot değilim" butonuna tıklanılmasının ardından bot tarafından kullanıcının tüm yasakları kaldırılır. Bu özellik bot hesapların grubu spamlamasının önüne geçmek için eklendi.
+Yeni giren kullanıcıların tüm mesaj alma yetkileri alınır ve susturulur. Karşılama mesajında yer alan "Ben bot değilim" butonuna tıklanılmasının ardından bot tarafından kullanıcının tüm yasakları kaldırılır. Bu özellik bot hesapların grubu spamlamasının önüne geçmek için eklendi.
 
 **ÖNEMLİ NOT**: Botun tüm özelliklerini kullanabilmek için grubun "supergroup" statüsünde olması gerekmektedir.
