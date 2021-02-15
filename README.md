@@ -9,6 +9,8 @@ Telegram gruplarının yönetiminde yardımcı olma amacıyla yazılmış bir bo
 - [x] Grup içi yönetim komutları
 - [x] Grup içi itibar sistemi
 - [x] Grup içi hakaret/küfür koruma sistemi
+- [ ] !kurallar komutu
+- [ ] Komutlar aracılığıyla grup kurallarının/karşılama mesajlarının özelleştirilmesi
 - [ ] İtibar tabanlı otomatik grup içi seviyeler
 - [ ] Grup içi istatistikler
 

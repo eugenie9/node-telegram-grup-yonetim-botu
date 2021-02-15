@@ -27,7 +27,7 @@ let kufurKontrol = (mesaj) => {
 
 bot.on('new_chat_members', async(msg) => {
   const ad = msg.new_chat_member.first_name
-  const karsilama = `Hoşgeldin ${ad}. Sana gerekli izinleri verebilmem için 'Ben bot değilim.' butonuna tıklamayı unutma. Aksi halde bazı özelliklerini kısıtlamak zorunda kalacağım. !kurallar yazarak grup kurallarına hızlıca bi göz atabilirsin. Danışmak istediğin bir şey varsa yetkili listesini görmek için /admin yazısına tıklaman yeterli. İyi sohbetler.`
+  const karsilama = `Hoşgeldin ${ad}. Sana gerekli izinleri verebilmem için 'Ben bot değilim.' butonuna tıklamayı unutma. Aksi halde bazı özelliklerini kısıtlamak zorunda kalacağım. Danışmak istediğin bir şey varsa yetkili listesini görmek için /admin yazısına tıklaman yeterli. İyi sohbetler.`
 
   let keyboard = []
   const form = {
