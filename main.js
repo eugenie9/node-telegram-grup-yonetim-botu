@@ -278,13 +278,33 @@ bot.on("message", async (msg) => {
       return;
     }
 
-    let mesaj = "*🏆 En Çok +1 Alanlar*\n\n";
+    let mesaj = "*🏆 En Çok \\+1 Alanlar*\n\n";
     const emojiler = ["🥇", "🥈", "🥉", "4️⃣", "5️⃣"];
 
     for (let i = 0; i < topKullanicilar.length; i++) {
       const k = topKullanicilar[i];
       mesaj += `${emojiler[i]} ${escapeMarkdownV2(k.name)} — *${k.itibar}*\n`;
     }
+
+    bot.sendMessage(msg.chat.id, mesaj, { parse_mode: "MarkdownV2" });
+    return;
+  }
+
+  if (msg.text.startsWith("/kurallar")) {
+    const kurallar = [
+      "1\\. Saygılı ve nazik bir dil kullanın\\.",
+      "2\\. Spam, reklam ve zincirleme mesajlar yasaktır\\.",
+      "3\\. Küfür, hakaret ve aşağılayıcı ifadeler kullanmayın\\.",
+      "4\\. Grubun konusu dışında uzun tartışmalara girmeyin\\.",
+      "5\\. Kişisel bilgilerinizi paylaşırken dikkatli olun\\.",
+      "6\\. Yönetici ve moderatörlerin uyarılarını dikkate alın\\.",
+      "7\\. \\+1 sistemi ile kaliteli paylaşımları ödüllendirin\\.",
+    ];
+
+    let mesaj = "*📜 Grup Kuralları*\n\n";
+    mesaj += kurallar.join("\n");
+    mesaj +=
+      "\n\nKurallara uymayan kullanıcılar susturulabilir veya gruptan uzaklaştırılabilir\\. İyi sohbetler dileriz\\! 🎉";
 
     bot.sendMessage(msg.chat.id, mesaj, { parse_mode: "MarkdownV2" });
     return;
