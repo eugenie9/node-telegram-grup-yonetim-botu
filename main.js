@@ -10,20 +10,18 @@ if (!token) {
 
 const bot = new TelegramBot(token, { polling: true });
 
-let kufurler = require("./karaliste");
+const kufurler = require("./karaliste");
 const veritabani = require("./veritabani");
 
-let xSaniyeBekle = async (x) => {
-  await new Promise((done) => setTimeout(done, x * 1000));
-};
+/**
+ * Escapes special characters for Telegram MarkdownV2 parse mode.
+ * Characters: _ * [ ] ( ) ~ ` > # + - = | { } . !
+ */
+function escapeMarkdownV2(text) {
+  return text.replace(/[_*[\]()~`>#+\-=|{}.!]/g, "\\$&");
+}
 
-let mesajSil = async (chat, msgId, sure = 90) => {
-  await xSaniyeBekle(sure);
-
-  bot.deleteMessage(chat, msgId);
-};
-
-let kufurKontrol = (mesaj) => {
+const kufurKontrol = (mesaj) => {
   mesaj = mesaj.split(" ");
   for (let m of mesaj) {
     if (kufurler.includes(m.toLowerCase())) {
@@ -37,7 +35,7 @@ bot.on("new_chat_members", async (msg) => {
   const ad = msg.new_chat_member.first_name;
   const karsilama = `Hoşgeldin ${ad}. Sana gerekli izinleri verebilmem için 'Ben bot değilim.' butonuna tıklamayı unutma. Aksi halde bazı özelliklerini kısıtlamak zorunda kalacağım. Danışmak istediğin bir şey varsa yetkili listesini görmek için /admin yazısına tıklaman yeterli. İyi sohbetler.`;
 
-  let keyboard = [];
+  const keyboard = [];
   const form = {
     can_send_messages: false,
     can_send_media_messages: false,
@@ -59,9 +57,11 @@ bot.on("new_chat_members", async (msg) => {
 });
 
 bot.on("message", async (msg) => {
+  if (!msg.text) return;
+
   if (kufurKontrol(msg.text)) {
-    bot.deleteMessage(msg.chat.id, msg.message_id);
-    bot.sendMessage(
+    await bot.deleteMessage(msg.chat.id, msg.message_id);
+    await bot.sendMessage(
       msg.chat.id,
       `${msg.from.first_name} Mesajını uygunsuz içerik sebebiyle siliyorum. Grupta kullandığın dile dikkat et.`,
     );
@@ -102,8 +102,8 @@ bot.on("message", async (msg) => {
   if (msg.reply_to_message != undefined && msg.text.startsWith("/yetkili")) {
     const yetkiVerilenId = msg.reply_to_message.from.id;
     const yetkiVerilenAd = msg.reply_to_message.from.first_name;
-    let yoneticiler = await bot.getChatAdministrators(msg.chat.id);
-    let yetki = await veritabani.yetkiKontrol(yetkiVerilenId);
+    const yoneticiler = await bot.getChatAdministrators(msg.chat.id);
+    const yetki = await veritabani.yetkiKontrol(yetkiVerilenId);
 
     for (let yonetici of yoneticiler) {
       // Eğer komutu veren adminse
@@ -136,8 +136,8 @@ bot.on("message", async (msg) => {
   if (msg.reply_to_message != undefined && msg.text.startsWith("/yetkiAl")) {
     const yetkiAlinanId = msg.reply_to_message.from.id;
     const yetkiAlinanAd = msg.reply_to_message.from.first_name;
-    let yoneticiler = await bot.getChatAdministrators(msg.chat.id);
-    let yetki = await veritabani.yetkiKontrol(yetkiAlinanId);
+    const yoneticiler = await bot.getChatAdministrators(msg.chat.id);
+    const yetki = await veritabani.yetkiKontrol(yetkiAlinanId);
 
     for (let yonetici of yoneticiler) {
       // Eğer komutu veren adminse
@@ -168,9 +168,9 @@ bot.on("message", async (msg) => {
   }
 
   if (msg.reply_to_message != undefined && msg.text.startsWith("/sil")) {
-    let silinen = msg.reply_to_message.message_id;
-    let yoneticiler = await bot.getChatAdministrators(msg.chat.id);
-    let yetki = await veritabani.yetkiKontrol(msg.from.id);
+    const silinen = msg.reply_to_message.message_id;
+    const yoneticiler = await bot.getChatAdministrators(msg.chat.id);
+    const yetki = await veritabani.yetkiKontrol(msg.from.id);
 
     for (let yonetici of yoneticiler) {
       if (yonetici.user.id == msg.from.id) {
@@ -205,8 +205,8 @@ bot.on("message", async (msg) => {
       can_invite_users: false,
     };
 
-    let yoneticiler = await bot.getChatAdministrators(msg.chat.id);
-    let yetki = await veritabani.yetkiKontrol(msg.from.id);
+    const yoneticiler = await bot.getChatAdministrators(msg.chat.id);
+    const yetki = await veritabani.yetkiKontrol(msg.from.id);
 
     for (let yonetici of yoneticiler) {
       if (yonetici.user.id == msg.from.id) {
@@ -246,8 +246,8 @@ bot.on("message", async (msg) => {
       can_invite_users: true,
     };
 
-    let yoneticiler = await bot.getChatAdministrators(msg.chat.id);
-    let yetki = await veritabani.yetkiKontrol(msg.from.id);
+    const yoneticiler = await bot.getChatAdministrators(msg.chat.id);
+    const yetki = await veritabani.yetkiKontrol(msg.from.id);
 
     for (let yonetici of yoneticiler) {
       if (yonetici.user.id == msg.from.id) {
@@ -283,7 +283,7 @@ bot.on("message", async (msg) => {
 
     for (let i = 0; i < topKullanicilar.length; i++) {
       const k = topKullanicilar[i];
-      mesaj += `${emojiler[i]} ${k.name} — *${k.itibar}*\n`;
+      mesaj += `${emojiler[i]} ${escapeMarkdownV2(k.name)} — *${k.itibar}*\n`;
     }
 
     bot.sendMessage(msg.chat.id, mesaj, { parse_mode: "MarkdownV2" });
@@ -291,32 +291,36 @@ bot.on("message", async (msg) => {
   }
 
   if (msg.text.startsWith("/admin")) {
-    let yoneticiler = await bot.getChatAdministrators(msg.chat.id);
-    let moderatorler = await veritabani.moderatorListesi();
+    const yoneticiler = await bot.getChatAdministrators(msg.chat.id);
+    const moderatorler = await veritabani.moderatorListesi();
 
-    let sahip = "*Grup Sahibi*\n";
-    let yoneticiListesiYazi = "\n\n*Yöneticiler*\n";
-    let moderatorListesiYazi = "\n*Moderatörler*\n";
+    let mesaj = "*Grup Sahibi*\n";
+    const yoneticiIsimleri = [];
+    const moderatorIsimleri = [];
 
-    for (let yonetici of yoneticiler) {
+    for (const yonetici of yoneticiler) {
       if (!yonetici.user.is_bot) {
         if (yonetici.status == "creator") {
-          sahip += yonetici.user.first_name;
+          mesaj += escapeMarkdownV2(yonetici.user.first_name);
         } else {
-          yoneticiListesiYazi += yonetici.user.first_name + "\n";
+          yoneticiIsimleri.push(escapeMarkdownV2(yonetici.user.first_name));
         }
       }
     }
 
-    for (let moderator of moderatorler) {
-      moderatorListesiYazi += moderator.name + "\n";
+    for (const moderator of moderatorler) {
+      moderatorIsimleri.push(escapeMarkdownV2(moderator.name));
     }
 
-    bot.sendMessage(
-      msg.chat.id,
-      sahip + yoneticiListesiYazi + moderatorListesiYazi,
-      { parse_mode: "MarkdownV2" },
-    );
+    if (yoneticiIsimleri.length > 0) {
+      mesaj += "\n\n*Yöneticiler*\n" + yoneticiIsimleri.join("\n");
+    }
+
+    if (moderatorIsimleri.length > 0) {
+      mesaj += "\n\n*Moderatörler*\n" + moderatorIsimleri.join("\n");
+    }
+
+    bot.sendMessage(msg.chat.id, mesaj, { parse_mode: "MarkdownV2" });
   }
 });
 
@@ -324,7 +328,7 @@ bot.on("callback_query", async function onCallbackQuery(callbackQuery) {
   const action = callbackQuery.data;
 
   if (action.startsWith("benBotDegilim")) {
-    let args = action.split(" ");
+    const args = action.split(" ");
     const msg = callbackQuery;
     const chatId = msg.message.chat.id;
     const userId = msg.from.id;
@@ -336,7 +340,7 @@ bot.on("callback_query", async function onCallbackQuery(callbackQuery) {
         show_alert: true,
       });
 
-      let form = {
+      const form = {
         can_send_messages: true,
         can_send_media_messages: true,
         can_send_other_messages: true,

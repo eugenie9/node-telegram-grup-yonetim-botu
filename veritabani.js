@@ -58,24 +58,24 @@ const stmtTop5 = db.prepare(`
   LIMIT 5
 `);
 
-const moderatorEkle = async (id, name) => {
+const moderatorEkle = (id, name) => {
   stmtModeratorEkle.run(id, name);
 };
 
-const moderatorKaldir = async (id, name) => {
+const moderatorKaldir = (id, name) => {
   stmtModeratorKaldir.run(id);
 };
 
-const yetkiKontrol = async (id) => {
+const yetkiKontrol = (id) => {
   const row = stmtYetkiKontrol.get(id);
   return row !== undefined;
 };
 
-const moderatorListesi = async () => {
+const moderatorListesi = () => {
   return stmtModeratorListesi.all();
 };
 
-const itibarOgren = async (id) => {
+const itibarOgren = (id) => {
   const row = stmtItibarOgren.get(id);
   if (row === undefined) {
     return false;
@@ -83,7 +83,7 @@ const itibarOgren = async (id) => {
   return row.itibar;
 };
 
-const itibarArttir = async (id, name, verenId) => {
+const itibarArttir = (id, name, verenId) => {
   const row = stmtItibarOgren.get(id);
 
   if (row === undefined) {
@@ -98,15 +98,15 @@ const itibarArttir = async (id, name, verenId) => {
   }
 };
 
-const itibarGecmisi = async (alanId) => {
+const itibarGecmisi = (alanId) => {
   return stmtItibarGecmisi.all(alanId);
 };
 
-const top5 = async () => {
+const top5 = () => {
   return stmtTop5.all();
 };
 
-let veritabani = {
+const veritabani = {
   moderatorEkle,
   moderatorKaldir,
   yetkiKontrol,
