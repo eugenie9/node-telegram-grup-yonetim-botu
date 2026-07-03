@@ -59,7 +59,7 @@ bot.on("new_chat_members", async (msg) => {
 bot.on("message", async (msg) => {
   if (!msg.text) return;
 
-  if (kufurKontrol(msg.text)) {
+  if (veritabani.kufurKontrolAcik(msg.chat.id) && kufurKontrol(msg.text)) {
     await bot.deleteMessage(msg.chat.id, msg.message_id);
     await bot.sendMessage(
       msg.chat.id,
@@ -268,6 +268,40 @@ bot.on("message", async (msg) => {
       );
       return;
     }
+  }
+
+  if (msg.text.startsWith("/kufurKontrol")) {
+    const yoneticiler = await bot.getChatAdministrators(msg.chat.id);
+    let yetkili = false;
+
+    for (let yonetici of yoneticiler) {
+      if (yonetici.user.id == msg.from.id) {
+        yetkili = true;
+        break;
+      }
+    }
+
+    if (!yetkili) {
+      bot.sendMessage(
+        msg.chat.id,
+        "Bu komut sadece grup yöneticileri ve sahibi tarafından kullanılabilir.",
+      );
+      return;
+    }
+
+    const yeniDurum = veritabani.kufurKontrolToggle(msg.chat.id);
+    if (yeniDurum) {
+      bot.sendMessage(
+        msg.chat.id,
+        "✅ Küfür kontrolü açıldı. Artık küfürlü mesajlar otomatik olarak silinecek.",
+      );
+    } else {
+      bot.sendMessage(
+        msg.chat.id,
+        "❌ Küfür kontrolü kapatıldı. Küfürlü mesajlar artık silinmeyecek.",
+      );
+    }
+    return;
   }
 
   if (msg.text.startsWith("/top5")) {

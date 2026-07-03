@@ -24,6 +24,11 @@ db.exec(`
     alan_id INTEGER NOT NULL,
     created_at TEXT NOT NULL DEFAULT (datetime('now'))
   );
+
+  CREATE TABLE IF NOT EXISTS grup_ayarlari (
+    chat_id INTEGER PRIMARY KEY,
+    kufur_kontrol INTEGER NOT NULL DEFAULT 1
+  );
 `);
 
 // Prepared statements for performance
@@ -57,6 +62,16 @@ const stmtTop5 = db.prepare(`
   ORDER BY itibar DESC
   LIMIT 5
 `);
+
+const stmtKufurKontrolOgren = db.prepare(
+  "SELECT kufur_kontrol FROM grup_ayarlari WHERE chat_id = ?",
+);
+const stmtKufurKontrolAc = db.prepare(
+  "INSERT OR REPLACE INTO grup_ayarlari (chat_id, kufur_kontrol) VALUES (?, 1)",
+);
+const stmtKufurKontrolKapat = db.prepare(
+  "INSERT OR REPLACE INTO grup_ayarlari (chat_id, kufur_kontrol) VALUES (?, 0)",
+);
 
 const moderatorEkle = (id, name) => {
   stmtModeratorEkle.run(id, name);
@@ -106,6 +121,31 @@ const top5 = () => {
   return stmtTop5.all();
 };
 
+/**
+ * Returns true if küfür kontrol is enabled for the given chat.
+ * Defaults to true (enabled) if no setting exists yet.
+ */
+const kufurKontrolAcik = (chatId) => {
+  const row = stmtKufurKontrolOgren.get(chatId);
+  if (row === undefined) return true; // default: enabled
+  return row.kufur_kontrol === 1;
+};
+
+/**
+ * Toggles küfür kontrol for the given chat.
+ * Returns the new state (true = enabled, false = disabled).
+ */
+const kufurKontrolToggle = (chatId) => {
+  const suanki = kufurKontrolAcik(chatId);
+  if (suanki) {
+    stmtKufurKontrolKapat.run(chatId);
+    return false;
+  } else {
+    stmtKufurKontrolAc.run(chatId);
+    return true;
+  }
+};
+
 const veritabani = {
   moderatorEkle,
   moderatorKaldir,
@@ -115,6 +155,8 @@ const veritabani = {
   itibarArttir,
   itibarGecmisi,
   top5,
+  kufurKontrolAcik,
+  kufurKontrolToggle,
 };
 
 module.exports = veritabani;
